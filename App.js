@@ -34,7 +34,7 @@ Person.countDocuments({}, (error, count)=>{
 function doc(n) {
   console.log(n);
   if (n==0){
-    Person.insertMany(arrayOfPeople, (err, data)=>{
+    Person.create(arrayOfPeople, (err, data)=>{
       if (err){console.log(err)}
       else {    mongoose.connection.close();
         console.log("docs successfully saved to the DB"+ data);
@@ -60,23 +60,30 @@ Person.findOne({ name: 'John'}, (error,data)=>{
 //update a doc found attribute age to 20
 Person.updateOne({name:"Adam"},{age:20},(err)=>
 err? console.log(err):console.log("successfully updated"));
+
+//find doc by id and update the favoritefood attribute
+Person.findById("5f72ec53ab48b20d34943ec9", (error,data)=>{
+  if (error){console.log(error)}
+  else {
+    console.log(data)
+    data.favoriteFoods.push("Hamburger");
+    data.save();
+    console.log("doc found by id and updated "+ data);
+  }
+});
+
 //delete the docs with name of Mary
   Person.deleteMany({name:"Mary"}, (error)=>{
   if (error){console.log(error)}
   else {console.log("sucessfully removed")}
 })
+
 //find the two people who like burrito and sort them by age descendtly 
-Person.find({favoriteFoods: { $all : ["burrito"]}}).sort({'age':-1}).limit(2).exec((error,data)=>{
+Person.find({favoriteFoods: { $all : ["burrito"]}}).sort({'name':1}).limit(2).select('name favoriteFoods').exec((error,data)=>{
   if (error){console.log(error)}
   else {
     console.log("two People  like burrito "+data); }})
 
-//find doc by id and update the favoritefood attribute
-Person.findById("5f6fae0d0b9df405b477a7f8", (error,data)=>{
-  if (error){console.log(error)}
-  else {data.favoriteFoods.push("Hamburger");
-    console.log("doc found by id  "+ data);
-  }
-});
+
 
 
