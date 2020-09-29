@@ -78,7 +78,7 @@ Person.findById("5f72ec53ab48b20d34943ec9", (error,data)=>{
   else {console.log("sucessfully removed")}
 })
 
-//find the two people who like burrito and sort them by age descendtly 
+//find the two people who like burrito and sort them by name in ascending order and hiding the age
 Person.find({favoriteFoods: { $all : ["burrito"]}}).sort({'name':1}).limit(2).select('name favoriteFoods').exec((error,data)=>{
   if (error){console.log(error)}
   else {
